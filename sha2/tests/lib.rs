@@ -36,7 +36,7 @@ fn sha512_avx2_bug() {
         2a3e943072f30afa45f2bf57ccd386f29b76dbcdb3a861224ca0b77bc3f55c7a
         d3880a49c0c9c166eedf7f209c41b380896886155acb8f6c7c07044343a3e692
     ");
-    let res = sha2::Sha512::digest(&msg);
+    let res = sha2::Sha512::digest(&msg[..]);
     assert_eq!(res[..], expected[..]);
 }
 
