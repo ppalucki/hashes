@@ -38,8 +38,8 @@ use core::{convert::TryInto, fmt};
 use digest::{
     block_buffer::BlockBuffer,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::{
         typenum::{Unsigned, U16, U64},
@@ -56,7 +56,7 @@ pub struct Md4Core {
     state: [u32; 4],
 }
 
-impl BlockUser for Md4Core {
+impl BlockSizeUser for Md4Core {
     type BlockSize = BlockSize;
 }
 

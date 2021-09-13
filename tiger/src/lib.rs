@@ -39,8 +39,8 @@ use core::{fmt, slice::from_ref};
 use digest::{
     block_buffer::BlockBuffer,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::{
         typenum::{Unsigned, U24, U64},
@@ -69,7 +69,7 @@ pub struct TigerCore {
     state: State,
 }
 
-impl BlockUser for TigerCore {
+impl BlockSizeUser for TigerCore {
     type BlockSize = BlockSize;
 }
 
@@ -143,7 +143,7 @@ pub struct Tiger2Core {
     state: State,
 }
 
-impl BlockUser for Tiger2Core {
+impl BlockSizeUser for Tiger2Core {
     type BlockSize = BlockSize;
 }
 

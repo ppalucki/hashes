@@ -57,8 +57,8 @@ use digest::{
     block_buffer::{block_padding::Iso7816, BlockBuffer},
     consts::{U24, U28, U32, U48, U64},
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
 };
@@ -74,7 +74,7 @@ macro_rules! impl_core {
             state: EngineState,
         }
 
-        impl BlockUser for $name {
+        impl BlockSizeUser for $name {
             type BlockSize = BlockSize;
         }
 

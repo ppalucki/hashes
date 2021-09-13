@@ -44,8 +44,8 @@ use core::{fmt, slice::from_ref};
 use digest::{
     block_buffer::BlockBuffer,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::{
         typenum::{Unsigned, U16, U64},
@@ -64,7 +64,7 @@ pub struct Md5Core {
     state: [u32; 4],
 }
 
-impl BlockUser for Md5Core {
+impl BlockSizeUser for Md5Core {
     type BlockSize = BlockSize;
 }
 

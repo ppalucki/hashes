@@ -12,7 +12,7 @@ macro_rules! sha3_impl {
             state: Sha3State,
         }
 
-        impl BlockUser for $name {
+        impl BlockSizeUser for $name {
             type BlockSize = $rate;
         }
 
@@ -100,7 +100,7 @@ macro_rules! shake_impl {
             state: Sha3State,
         }
 
-        impl BlockUser for $name {
+        impl BlockSizeUser for $name {
             type BlockSize = $rate;
         }
 
@@ -172,7 +172,7 @@ macro_rules! shake_impl {
             state: Sha3State,
         }
 
-        impl BlockUser for $reader {
+        impl BlockSizeUser for $reader {
             type BlockSize = $rate;
         }
 

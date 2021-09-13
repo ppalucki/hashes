@@ -57,8 +57,8 @@ use digest::{
     block_buffer::BlockBuffer,
     consts::U64,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
 };
@@ -74,7 +74,7 @@ pub struct WhirlpoolCore {
     state: [u64; 8],
 }
 
-impl BlockUser for WhirlpoolCore {
+impl BlockSizeUser for WhirlpoolCore {
     type BlockSize = BlockSize;
 }
 

@@ -3,8 +3,8 @@ use digest::{
     block_buffer::BlockBuffer,
     consts::U64,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::GenericArray,
 };
@@ -17,7 +17,7 @@ pub struct Streebog512Core {
     state: StreebogState,
 }
 
-impl BlockUser for Streebog512Core {
+impl BlockSizeUser for Streebog512Core {
     type BlockSize = U64;
 }
 

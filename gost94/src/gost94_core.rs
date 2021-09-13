@@ -4,7 +4,8 @@ use digest::{
     block_buffer::{block_padding::ZeroPadding, BlockBuffer},
     consts::U32,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, FixedOutputCore, OutputSizeUser, Reset, UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, FixedOutputCore, OutputSizeUser, Reset,
+        UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
 };
@@ -196,7 +197,7 @@ impl<P: Gost94Params> Gost94Core<P> {
     }
 }
 
-impl<P: Gost94Params> BlockUser for Gost94Core<P> {
+impl<P: Gost94Params> BlockSizeUser for Gost94Core<P> {
     type BlockSize = U32;
 }
 

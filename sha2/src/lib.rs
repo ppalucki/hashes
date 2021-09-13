@@ -66,8 +66,8 @@ use core::{fmt, mem::size_of, slice::from_ref};
 use digest::{
     block_buffer::BlockBuffer,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::{
         typenum::{Unsigned, U128, U28, U32, U48, U64},
@@ -98,7 +98,7 @@ macro_rules! implement {
             block_len: $dword,
         }
 
-        impl BlockUser for $name {
+        impl BlockSizeUser for $name {
             type BlockSize = $block_size;
         }
 

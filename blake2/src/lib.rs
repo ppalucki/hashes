@@ -97,16 +97,14 @@
 #[cfg(feature = "std")]
 extern crate std;
 
-pub use crypto_mac;
 pub use digest::{self, Digest};
 
-use core::{convert::TryInto, ops::Div};
-// use crypto_mac::{InvalidKeyLength, Mac, NewMac, FromKey};
 use core::fmt;
+use core::{convert::TryInto, ops::Div};
 use digest::{
     block_buffer::LazyBlockBuffer,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, CtVariableCoreWrapper,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, CtVariableCoreWrapper,
         RtVariableCoreWrapper, UpdateCore, VariableOutputCore,
     },
     generic_array::{

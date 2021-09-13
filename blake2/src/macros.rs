@@ -180,7 +180,7 @@ macro_rules! blake2_impl {
             }
         }
 
-        impl BlockUser for $name {
+        impl BlockSizeUser for $name {
             type BlockSize = $block_size;
         }
 

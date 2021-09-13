@@ -42,8 +42,8 @@ use core::{fmt, slice::from_ref};
 use digest::{
     block_buffer::BlockBuffer,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::{
         typenum::{Unsigned, U32, U64},
@@ -66,7 +66,7 @@ pub struct Sm3Core {
     h: [u32; 8],
 }
 
-impl BlockUser for Sm3Core {
+impl BlockSizeUser for Sm3Core {
     type BlockSize = BlockSize;
 }
 

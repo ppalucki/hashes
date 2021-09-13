@@ -24,5 +24,4 @@ opt-level = 2
 
 [patch.crates-io]
 digest = { git = "https://github.com/RustCrypto/traits/", branch = "new_traits" }
-crypto-mac = { git = "https://github.com/RustCrypto/traits/", branch = "new_traits" }
 block-buffer = { git = "https://github.com/RustCrypto/utils", branch = "pad_error" }

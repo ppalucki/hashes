@@ -6,7 +6,6 @@ version = 3
 name = "blake2"
 version = "0.9.2"
 dependencies = [
- "crypto-mac",
  "digest",
  "hex-literal",
 ]
@@ -20,7 +19,7 @@ checksum = "fc52553543ecb104069b0ff9e0fcc5c739ad16202935528a112d974e8f1a4ee8"
 [[package]]
 name = "block-buffer"
 version = "0.10.0"
-source = "git+https://github.com/RustCrypto/utils?branch=pad_error#63cac368884f91a364a905739484ad0a77327abe"
+source = "git+https://github.com/RustCrypto/utils?branch=pad_error#f9a89ffd73c242e7fbeac824e6c48eed0d68061b"
 dependencies = [
  "block-padding",
  "generic-array",
@@ -29,16 +28,16 @@ dependencies = [
 [[package]]
 name = "block-padding"
 version = "0.3.0"
-source = "git+https://github.com/RustCrypto/utils?branch=pad_error#63cac368884f91a364a905739484ad0a77327abe"
+source = "git+https://github.com/RustCrypto/utils?branch=pad_error#f9a89ffd73c242e7fbeac824e6c48eed0d68061b"
 dependencies = [
  "generic-array",
 ]
 
 [[package]]
 name = "cc"
-version = "1.0.69"
+version = "1.0.70"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e70cc2f62c6ce1868963827bd677764c62d07c3d9a3e1fb1177ee1a9ab199eb2"
+checksum = "d26a6ce4b6a484fa3edb70f7efa6fc430fd2b87285fe8b84304fd0936faa0dc0"
 
 [[package]]
 name = "cfg-if"
@@ -58,27 +57,16 @@ dependencies = [
 [[package]]
 name = "crypto-common"
 version = "0.1.0"
-source = "git+https://github.com/RustCrypto/traits/?branch=new_traits#bd0fa5914346208cfd98c531135abd97d6b698e0"
+source = "git+https://github.com/RustCrypto/traits/?branch=new_traits#e1e3090a6fd683138e50e4862c9b9a214e27aa17"
 dependencies = [
  "block-buffer",
  "generic-array",
 ]
 
 [[package]]
-name = "crypto-mac"
-version = "0.11.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1d1a86f49236c215f271d40892d5fc950490551400b02ef360692c29815c714"
-dependencies = [
- "blobby",
- "generic-array",
- "subtle",
-]
-
-[[package]]
 name = "digest"
 version = "0.10.0"
-source = "git+https://github.com/RustCrypto/traits/?branch=new_traits#bd0fa5914346208cfd98c531135abd97d6b698e0"
+source = "git+https://github.com/RustCrypto/traits/?branch=new_traits#e1e3090a6fd683138e50e4862c9b9a214e27aa17"
 dependencies = [
  "blobby",
  "crypto-common",
@@ -281,12 +269,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "subtle"
-version = "2.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
-
-[[package]]
 name = "tiger"
 version = "0.1.0"
 dependencies = [
@@ -296,9 +278,9 @@ dependencies = [
 
 [[package]]
 name = "typenum"
-version = "1.13.0"
+version = "1.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "879f6906492a7cd215bfa4cf595b600146ccfac0c79bcbd1f3000162af5e8b06"
+checksum = "b63708a265f51345575b27fe43f9500ad611579e764c79edbc2037b1121959ec"
 
 [[package]]
 name = "version_check"
@@ -323,8 +305,3 @@ checksum = "4b0930846e800a97c78fd09a494b25d1f0780be9face03b7a05151e3104a8284"
 dependencies = [
  "cc",
 ]
-
-[[patch.unused]]
-name = "crypto-mac"
-version = "0.12.0-pre"
-source = "git+https://github.com/RustCrypto/traits/?branch=new_traits#bd0fa5914346208cfd98c531135abd97d6b698e0"

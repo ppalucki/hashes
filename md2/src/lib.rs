@@ -38,8 +38,8 @@ use digest::{
     block_buffer::{block_padding::Pkcs7, BlockBuffer},
     consts::U16,
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::GenericArray,
 };
@@ -82,7 +82,7 @@ impl Md2Core {
     }
 }
 
-impl BlockUser for Md2Core {
+impl BlockSizeUser for Md2Core {
     type BlockSize = BlockSize;
 }
 

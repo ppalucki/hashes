@@ -53,8 +53,8 @@ use digest::{
     block_buffer::BlockBuffer,
     consts::{U20, U32, U40, U64},
     core_api::{
-        AlgorithmName, BlockUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser, Reset,
-        UpdateCore,
+        AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, FixedOutputCore, OutputSizeUser,
+        Reset, UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
 };
@@ -73,7 +73,7 @@ pub struct Ripemd160Core {
     block_len: u64,
 }
 
-impl BlockUser for Ripemd160Core {
+impl BlockSizeUser for Ripemd160Core {
     type BlockSize = BlockSize;
 }
 
@@ -153,7 +153,7 @@ pub struct Ripemd256Core {
     block_len: u64,
 }
 
-impl BlockUser for Ripemd256Core {
+impl BlockSizeUser for Ripemd256Core {
     type BlockSize = BlockSize;
 }
 
@@ -233,7 +233,7 @@ pub struct Ripemd320Core {
     block_len: u64,
 }
 
-impl BlockUser for Ripemd320Core {
+impl BlockSizeUser for Ripemd320Core {
     type BlockSize = BlockSize;
 }
 
