@@ -8,10 +8,38 @@ use core::arch::x86::*;
 use core::arch::x86_64::*;
 
 unsafe fn schedule(v0: __m128i, v1: __m128i, v2: __m128i, v3: __m128i) -> __m128i {
-    let t1 = _mm_sha256msg1_epu32(v0, v1);
-    let t2 = _mm_alignr_epi8(v3, v2, 4);
-    let t3 = _mm_add_epi32(t1, t2);
-    _mm_sha256msg2_epu32(t3, v3)
+
+
+    #[cfg(not(all(target_feature="avx512f", target_feature="avx512vl")))]{
+        let t1 = _mm_sha256msg1_epu32(v0, v1);
+        let t2 = _mm_alignr_epi8(v3, v2, 4);
+        let t3 = _mm_add_epi32(t1, t2);
+        _mm_sha256msg2_epu32(t3, v3)
+    }
+
+    #[cfg(all(target_feature="avx512f", target_feature="avx512vl"))]{
+        // _mm_sha256msg1_epu32
+        let msg1_1 = _mm_alignr_epi8::<4>(v1, v0);
+        let msg1_2 = _mm_xor_epi32(_mm_ror_epi32::<7>(msg1_1), _mm_ror_epi32::<18>(msg1_1));
+        let msg1_3 = _mm_xor_epi32(_mm_srli_epi32::<3>(msg1_1), msg1_2);
+        let t1 =_mm_add_epi32(v0, msg1_3);
+
+        let t2 = _mm_alignr_epi8::<4>(v3, v2);
+        let t3 = _mm_add_epi32(t1, t2);
+
+        // _mm_sha256msg2_epu32
+        let msg2_1 = _mm_maskz_shuffle_epi32::<0x4e>(0x3, v3);
+
+        let msg2_2 = _mm_xor_epi32( _mm_ror_epi32::<17>(msg2_1), _mm_ror_epi32::<19>(msg2_1)); // 
+        let msg2_3 = _mm_xor_epi32( _mm_srli_epi32::<10>(msg2_1), msg2_2);
+        let msg2_4 = _mm_add_epi32(t3,  msg2_3);
+
+        let msg2_5 = _mm_maskz_shuffle_epi32::<0x4e>(0xc, msg2_4);
+
+        let msg2_6 = _mm_xor_epi32( _mm_ror_epi32::<17>(msg2_5), _mm_ror_epi32::<19>(msg2_5));
+        let msg2_7 = _mm_xor_epi32( _mm_srli_epi32::<10>(msg2_5), msg2_6);
+        _mm_add_epi32(msg2_4,  msg2_7)
+    }
 }
 
 macro_rules! rounds4 {

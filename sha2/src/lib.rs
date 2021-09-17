@@ -52,6 +52,9 @@
 //! [1]: https://en.wikipedia.org/wiki/SHA-2
 //! [2]: https://github.com/RustCrypto/hashes
 
+#![cfg_attr(all(target_feature="avx512f", target_feature="avx512vl"), feature(stdsimd))]
+#![cfg_attr(all(target_feature="avx512f", target_feature="avx512vl"), feature(avx512_target_feature))]
+
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc(
