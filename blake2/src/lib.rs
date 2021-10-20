@@ -85,8 +85,8 @@ pub use digest::{self, Digest};
 
 use core::{convert::TryInto, fmt, ops::Div};
 use digest::{
-    consts::{U128, U32, U4, U64},
     block_buffer::LazyBlockBuffer,
+    consts::{U128, U32, U4, U64},
     core_api::{
         AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, CtVariableCoreWrapper,
         RtVariableCoreWrapper, UpdateCore, VariableOutputCore,
@@ -131,7 +131,6 @@ pub type Blake2bCore<OutSize> = CtVariableCoreWrapper<Blake2bVarCore, OutSize>;
 pub type Blake2b<OutSize> = CoreWrapper<Blake2bCore<OutSize>>;
 /// BLAKE2b-512 hasher state.
 pub type Blake2b512 = Blake2b<U64>;
-
 
 blake2_impl!(
     Blake2sVarCore,
