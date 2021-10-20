@@ -52,13 +52,13 @@
 //!
 //! ## Message Authentication Code (MAC)
 //!
-//! BLAKE2 can be used as a MAC without any additional constructs:
+//! BLAKE2 can be used as MAC:
 //!
-//! ```rust,ignore
-//! use blake2::Blake2b;
-//! use blake2::crypto_mac::{Mac, NewMac};
+//! ```rust
+//! use blake2::Blake2bMac512;
+//! use blake2::crypto_mac::{Mac, KeyInit, Update};
 //!
-//! let mut hasher = Blake2b::new_varkey(b"my key").unwrap();
+//! let mut hasher = Blake2bMac512::new_from_slice(b"my key").unwrap();
 //! hasher.update(b"hello world");
 //!
 //! // `result` has type `crypto_mac::Output` which is a thin wrapper around
@@ -70,7 +70,7 @@
 //! let code_bytes = result.into_bytes();
 //!
 //! // To verify the message it's recommended to use `verify` method
-//! let mut hasher = Blake2b::new_varkey(b"my key").unwrap();
+//! let mut hasher = Blake2bMac512::new_from_slice(b"my key").unwrap();
 //! hasher.update(b"hello world");
 //! // `verify` return `Ok(())` if code is correct, `Err(MacError)` otherwise
 //! hasher.verify(&code_bytes).unwrap();
@@ -98,20 +98,24 @@
 extern crate std;
 
 pub use digest::{self, Digest};
+pub use crypto_mac::{self, Mac};
 
-use core::fmt;
-use core::{convert::TryInto, ops::Div};
+use core::{fmt, convert::TryInto, ops::Div, marker::PhantomData};
 use digest::{
-    block_buffer::LazyBlockBuffer,
+    block_buffer::{LazyBlockBuffer, DigestBuffer},
     core_api::{
         AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, CtVariableCoreWrapper,
         RtVariableCoreWrapper, UpdateCore, VariableOutputCore,
     },
     generic_array::{
-        typenum::{Unsigned, U128, U32, U4, U64},
-        GenericArray,
+        typenum::{Unsigned, IsLessOrEqual, LeEq, NonZero, U128, U32, U4, U64},
+        GenericArray, ArrayLength,
     },
     InvalidOutputSize,
+};
+use crypto_mac::{
+    Key, KeyInit, InvalidLength,
+    crypto_common::{Update, KeySizeUser, FixedOutput, OutputSizeUser, Output},
 };
 
 mod as_bytes;
@@ -121,9 +125,6 @@ mod simd;
 
 #[macro_use]
 mod macros;
-
-// mod blake2b;
-// mod blake2s;
 
 use as_bytes::AsBytes;
 use consts::{BLAKE2B_IV, BLAKE2S_IV};
@@ -145,6 +146,13 @@ blake2_impl!(
     "Blake2b instance with a fixed output.",
 );
 
+blake2_mac_impl!(
+    Blake2bMac,
+    Blake2bVarCore,
+    U64,
+    "Blake2b MAC function",
+);
+
 /// BLAKE2b which allows to choose output size at runtime.
 pub type Blake2bVar = RtVariableCoreWrapper<Blake2bVarCore>;
 /// Core hasher state of BLAKE2b generic over output size.
@@ -153,6 +161,11 @@ pub type Blake2bCore<OutSize> = CtVariableCoreWrapper<Blake2bVarCore, OutSize>;
 pub type Blake2b<OutSize> = CoreWrapper<Blake2bCore<OutSize>>;
 /// BLAKE2b-512 hasher state.
 pub type Blake2b512 = Blake2b<U64>;
+
+/// BLAKE2b-512 MAC state.
+pub type Blake2bMac512 = Blake2bMac<U64>;
+/// BLAKE2b-512 MAC state.
+pub type Blake2sMac512 = Blake2sMac<U64>;
 
 blake2_impl!(
     Blake2sVarCore,
@@ -170,6 +183,13 @@ blake2_impl!(
     "Blake2s instance with a fixed output.",
 );
 
+blake2_mac_impl!(
+    Blake2sMac,
+    Blake2sVarCore,
+    U32,
+    "Blake2s MAC function",
+);
+
 /// BLAKE2s which allows to choose output size at runtime.
 pub type Blake2sVar = RtVariableCoreWrapper<Blake2sVarCore>;
 /// Core hasher state of BLAKE2s generic over output size.
@@ -178,3 +198,5 @@ pub type Blake2sCore<OutSize> = CtVariableCoreWrapper<Blake2sVarCore, OutSize>;
 pub type Blake2s<OutSize> = CoreWrapper<Blake2sCore<OutSize>>;
 /// BLAKE2s-256 hasher state.
 pub type Blake2s256 = Blake2s<U32>;
+/// BLAKE2s-256 MAC state.
+pub type Blake2sMac256 = Blake2sMac<U32>;
