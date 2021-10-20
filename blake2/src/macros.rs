@@ -238,7 +238,6 @@ macro_rules! blake2_impl {
     };
 }
 
-
 macro_rules! blake2_mac_impl {
     (
         $name:ident, $hash:ty, $max_size:ty, $doc:expr,
@@ -255,7 +254,6 @@ macro_rules! blake2_mac_impl {
             _out: PhantomData<OutSize>,
         }
 
-
         impl<OutSize> KeySizeUser for $name<OutSize>
         where
             OutSize: ArrayLength<u8> + IsLessOrEqual<$max_size>,
@@ -264,7 +262,7 @@ macro_rules! blake2_mac_impl {
             type KeySize = <$hash as BlockSizeUser>::BlockSize;
         }
 
-        impl<OutSize> KeyInit for $name<OutSize> 
+        impl<OutSize> KeyInit for $name<OutSize>
         where
             OutSize: ArrayLength<u8> + IsLessOrEqual<$max_size>,
             LeEq<OutSize, $max_size>: NonZero,
@@ -301,7 +299,6 @@ macro_rules! blake2_mac_impl {
             }
         }
 
-
         impl<OutSize> OutputSizeUser for $name<OutSize>
         where
             OutSize: ArrayLength<u8> + IsLessOrEqual<$max_size>,
@@ -318,11 +315,7 @@ macro_rules! blake2_mac_impl {
             #[inline]
             fn finalize_into(mut self, out: &mut Output<Self>) {
                 let Self { core, buffer, .. } = &mut self;
-                core.finalize_variable_core(
-                    buffer,
-                    OutSize::USIZE,
-                    |res| out.copy_from_slice(res),
-                );
+                core.finalize_variable_core(buffer, OutSize::USIZE, |res| out.copy_from_slice(res));
             }
         }
 
@@ -330,7 +323,8 @@ macro_rules! blake2_mac_impl {
         where
             OutSize: ArrayLength<u8> + IsLessOrEqual<$max_size>,
             LeEq<OutSize, $max_size>: NonZero,
-        {}
+        {
+        }
 
         impl<OutSize> fmt::Debug for $name<OutSize>
         where

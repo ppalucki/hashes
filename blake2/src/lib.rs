@@ -2,7 +2,7 @@
 //!
 //! # Usage
 //!
-//! `Blake2b` can be used in the following way:
+//! [`Blake2b512`] and [`Blake2s256`] can be used in the following way:
 //!
 //! ```rust
 //! use blake2::{Blake2b512, Blake2s256, Digest};
@@ -34,10 +34,9 @@
 //!
 //! ## Variable output size
 //!
-//! If you need variable sized output you can use `VarBlake2b` and `VarBlake2s`
-//! which support variable output sizes through `VariableOutput` trait. `Update`
-//! trait has to be imported as well.
+//! This implementation supports run and compile time variable sizes.
 //!
+//! Run time variable output example:
 //! ```rust
 //! use blake2::Blake2bVar;
 //! use blake2::digest::{Update, VariableOutput};
@@ -48,6 +47,19 @@
 //! hasher.finalize_variable(|res| {
 //!     assert_eq!(res, hex!("2cc55c84e416924e6400"))
 //! })
+//! ```
+//!
+//! Compile time variable output example:
+//! ```rust
+//! use blake2::{Blake2b, Digest, digest::consts::U10};
+//! use hex_literal::hex;
+//!
+//! type Blake2b80 = Blake2b<U10>;
+//!
+//! let mut hasher = Blake2b80::new();
+//! hasher.update(b"my_input");
+//! let res = hasher.finalize();
+//! assert_eq!(res[..], hex!("2cc55c84e416924e6400")[..]);
 //! ```
 //!
 //! ## Message Authentication Code (MAC)
@@ -97,25 +109,25 @@
 #[cfg(feature = "std")]
 extern crate std;
 
+pub use crypto_mac;
 pub use digest::{self, Digest};
-pub use crypto_mac::{self, Mac};
 
-use core::{fmt, convert::TryInto, ops::Div, marker::PhantomData};
+use core::{convert::TryInto, fmt, marker::PhantomData, ops::Div};
+use crypto_mac::{
+    crypto_common::{FixedOutput, KeySizeUser, Output, OutputSizeUser, Update},
+    InvalidLength, Key, KeyInit, Mac,
+};
 use digest::{
-    block_buffer::{LazyBlockBuffer, DigestBuffer},
+    block_buffer::{DigestBuffer, LazyBlockBuffer},
     core_api::{
         AlgorithmName, BlockSizeUser, BufferUser, CoreWrapper, CtVariableCoreWrapper,
         RtVariableCoreWrapper, UpdateCore, VariableOutputCore,
     },
     generic_array::{
-        typenum::{Unsigned, IsLessOrEqual, LeEq, NonZero, U128, U32, U4, U64},
-        GenericArray, ArrayLength,
+        typenum::{IsLessOrEqual, LeEq, NonZero, Unsigned, U128, U32, U4, U64},
+        ArrayLength, GenericArray,
     },
     InvalidOutputSize,
-};
-use crypto_mac::{
-    Key, KeyInit, InvalidLength,
-    crypto_common::{Update, KeySizeUser, FixedOutput, OutputSizeUser, Output},
 };
 
 mod as_bytes;
@@ -146,12 +158,7 @@ blake2_impl!(
     "Blake2b instance with a fixed output.",
 );
 
-blake2_mac_impl!(
-    Blake2bMac,
-    Blake2bVarCore,
-    U64,
-    "Blake2b MAC function",
-);
+blake2_mac_impl!(Blake2bMac, Blake2bVarCore, U64, "Blake2b MAC function",);
 
 /// BLAKE2b which allows to choose output size at runtime.
 pub type Blake2bVar = RtVariableCoreWrapper<Blake2bVarCore>;
@@ -164,8 +171,6 @@ pub type Blake2b512 = Blake2b<U64>;
 
 /// BLAKE2b-512 MAC state.
 pub type Blake2bMac512 = Blake2bMac<U64>;
-/// BLAKE2b-512 MAC state.
-pub type Blake2sMac512 = Blake2sMac<U64>;
 
 blake2_impl!(
     Blake2sVarCore,
@@ -183,12 +188,7 @@ blake2_impl!(
     "Blake2s instance with a fixed output.",
 );
 
-blake2_mac_impl!(
-    Blake2sMac,
-    Blake2sVarCore,
-    U32,
-    "Blake2s MAC function",
-);
+blake2_mac_impl!(Blake2sMac, Blake2sVarCore, U32, "Blake2s MAC function",);
 
 /// BLAKE2s which allows to choose output size at runtime.
 pub type Blake2sVar = RtVariableCoreWrapper<Blake2sVarCore>;
