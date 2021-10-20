@@ -1,5 +1,5 @@
 use digest::block_buffer::block_padding::{
-    generic_array::ArrayLength, Block, PadError, Padding, UnpadError,
+    generic_array::ArrayLength, Block, PadError, Padding,
 };
 
 macro_rules! impl_padding {
@@ -18,10 +18,6 @@ macro_rules! impl_padding {
                 let n = block.len();
                 block[n - 1] |= 0x80;
                 Ok(())
-            }
-
-            fn unpad(_: &Block<B>) -> Result<&[u8], UnpadError> {
-                unimplemented!();
             }
         }
     };
