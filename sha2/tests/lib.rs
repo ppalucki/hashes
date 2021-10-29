@@ -2,9 +2,13 @@ use digest::dev::{digest_test, one_million_a};
 use digest::new_test;
 
 new_test!(sha224_main, "sha224", sha2::Sha224, digest_test);
+new_test!(sha224_nist_shortlong, "sha224_nist_shortlong", sha2::Sha224, digest_test);
 new_test!(sha256_main, "sha256", sha2::Sha256, digest_test);
+new_test!(sha256_nist_shortlong, "sha256_nist_shortlong", sha2::Sha256, digest_test);
 new_test!(sha384_main, "sha384", sha2::Sha384, digest_test);
+new_test!(sha384_nist_shortlong, "sha384_nist_shortlong", sha2::Sha384, digest_test);
 new_test!(sha512_main, "sha512", sha2::Sha512, digest_test);
+new_test!(sha512_nist_shortlong, "sha512_nist_shortlong", sha2::Sha512, digest_test);
 new_test!(
     sha512_224_main,
     "sha512_224",
