@@ -129,6 +129,10 @@ jobs:
             rust: stable
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+      # Cross mounts only current package, i.e. by default it ignores workspace's Cargo.toml
+        working-directory: .
     steps:
       - uses: actions/checkout@v1
       - uses: actions-rs/toolchain@v1
@@ -143,5 +147,5 @@ jobs:
           wget -O /tmp/binaries.tar.gz $URL
           tar -C /tmp -xzf /tmp/binaries.tar.gz
           mv /tmp/cross ~/.cargo/bin
-      - run: cross test --target ${{ matrix.target }} --release
-      - run: cross test --target ${{ matrix.target }} --release --features asm
+      - run: cross test --package sha2 --target ${{ matrix.target }} --release
+      - run: cross test --package sha2 --target ${{ matrix.target }} --release --features asm
