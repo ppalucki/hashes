@@ -92,7 +92,7 @@ use digest::{
         RtVariableCoreWrapper, UpdateCore, VariableOutputCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
-    InvalidOutputSize,
+    InvalidOutputSize, HashMarker,
 };
 
 mod as_bytes;

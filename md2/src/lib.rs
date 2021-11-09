@@ -42,6 +42,7 @@ use digest::{
         Reset, UpdateCore,
     },
     generic_array::GenericArray,
+    HashMarker,
 };
 
 mod consts;
@@ -81,6 +82,8 @@ impl Md2Core {
         }
     }
 }
+
+impl HashMarker for Md2Core {}
 
 impl BlockSizeUser for Md2Core {
     type BlockSize = BlockSize;

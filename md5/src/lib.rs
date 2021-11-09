@@ -51,6 +51,7 @@ use digest::{
         typenum::{Unsigned, U16, U64},
         GenericArray,
     },
+    HashMarker,
 };
 
 type BlockSize = U64;
@@ -63,6 +64,8 @@ pub struct Md5Core {
     block_len: u64,
     state: [u32; 4],
 }
+
+impl HashMarker for Md5Core {}
 
 impl BlockSizeUser for Md5Core {
     type BlockSize = BlockSize;

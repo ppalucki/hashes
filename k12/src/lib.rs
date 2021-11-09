@@ -28,7 +28,7 @@ mod lanes;
 // TODO(tarcieri): eliminate usage of `Vec`
 use alloc::vec::Vec;
 use core::{cmp::min, convert::TryInto, mem};
-use digest::{ExtendableOutput, Reset, Update, XofReader};
+use digest::{ExtendableOutput, Reset, Update, XofReader, HashMarker};
 
 /// The KangarooTwelve extendable-output function (XOF).
 #[derive(Debug, Default)]
@@ -56,6 +56,8 @@ impl KangarooTwelve {
         }
     }
 }
+
+impl HashMarker for KangarooTwelve {}
 
 impl Update for KangarooTwelve {
     fn update(&mut self, bytes: &[u8]) {

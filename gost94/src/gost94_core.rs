@@ -8,6 +8,7 @@ use digest::{
         UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
+    HashMarker,
 };
 
 use crate::params::{Block, Gost94Params, SBox};
@@ -196,6 +197,8 @@ impl<P: Gost94Params> Gost94Core<P> {
         self.update_sigma(block);
     }
 }
+
+impl<P: Gost94Params> HashMarker for Gost94Core<P> {}
 
 impl<P: Gost94Params> BlockSizeUser for Gost94Core<P> {
     type BlockSize = U32;

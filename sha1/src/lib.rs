@@ -54,6 +54,7 @@ use digest::{
         typenum::{Unsigned, U20, U64},
         GenericArray,
     },
+    HashMarker,
 };
 
 mod compress;
@@ -75,6 +76,8 @@ pub struct Sha1Core {
     h: [u32; STATE_LEN],
     block_len: u64,
 }
+
+impl HashMarker for Sha1Core {}
 
 impl BlockSizeUser for Sha1Core {
     type BlockSize = BlockSize;

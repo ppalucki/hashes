@@ -49,6 +49,7 @@ use digest::{
         typenum::{Unsigned, U32, U64},
         GenericArray,
     },
+    HashMarker,
 };
 
 mod compress;
@@ -65,6 +66,8 @@ pub struct Sm3Core {
     block_len: u64,
     h: [u32; 8],
 }
+
+impl HashMarker for Sm3Core {}
 
 impl BlockSizeUser for Sm3Core {
     type BlockSize = BlockSize;

@@ -46,7 +46,7 @@ use digest::{
         typenum::{Unsigned, U128, U28, U32, U48, U64},
         GenericArray,
     },
-    InvalidOutputSize,
+    InvalidOutputSize, HashMarker,
 };
 
 mod compress1024;
@@ -65,6 +65,8 @@ pub struct GroestlShortVarCore {
     state: [u64; compress512::COLS],
     blocks_len: u64,
 }
+
+impl HashMarker for GroestlShortVarCore {}
 
 impl BlockSizeUser for GroestlShortVarCore {
     type BlockSize = ShortBlockSize;
@@ -152,6 +154,8 @@ pub struct GroestlLongVarCore {
     state: [u64; compress1024::COLS],
     blocks_len: u64,
 }
+
+impl HashMarker for GroestlLongVarCore {}
 
 impl BlockSizeUser for GroestlLongVarCore {
     type BlockSize = LongBlockSize;

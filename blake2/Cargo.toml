@@ -13,7 +13,6 @@ categories = ["cryptography", "no-std"]
 
 [dependencies]
 digest = "0.10"
-crypto-mac = "0.12.0-pre"
 
 [dev-dependencies]
 digest = { version = "0.10", features = ["dev"] }
@@ -21,7 +20,6 @@ hex-literal = "0.2"
 
 [features]
 default = ["std"]
-reset = []
 std = ["digest/std"]
 simd = []
 simd_opt = ["simd"]

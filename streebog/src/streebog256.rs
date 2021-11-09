@@ -7,6 +7,7 @@ use digest::{
         Reset, UpdateCore,
     },
     generic_array::GenericArray,
+    HashMarker,
 };
 
 use crate::streebog::StreebogState;
@@ -16,6 +17,8 @@ use crate::streebog::StreebogState;
 pub struct Streebog256Core {
     state: StreebogState,
 }
+
+impl HashMarker for Streebog256Core {}
 
 impl BlockSizeUser for Streebog256Core {
     type BlockSize = U64;

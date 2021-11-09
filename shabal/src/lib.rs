@@ -61,6 +61,7 @@ use digest::{
         Reset, UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
+    HashMarker,
 };
 use state::{compress, compress_final, Block, BlockSize, EngineState};
 
@@ -73,6 +74,8 @@ macro_rules! impl_core {
         pub struct $name {
             state: EngineState,
         }
+
+        impl HashMarker for $name {}
 
         impl BlockSizeUser for $name {
             type BlockSize = BlockSize;

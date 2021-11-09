@@ -61,6 +61,7 @@ use digest::{
         Reset, UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
+    HashMarker,
 };
 
 type BlockSize = U64;
@@ -73,6 +74,8 @@ pub struct WhirlpoolCore {
     bit_len: [u64; 4],
     state: [u64; 8],
 }
+
+impl HashMarker for WhirlpoolCore {}
 
 impl BlockSizeUser for WhirlpoolCore {
     type BlockSize = BlockSize;

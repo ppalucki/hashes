@@ -12,6 +12,8 @@ macro_rules! sha3_impl {
             state: Sha3State,
         }
 
+        impl HashMarker for $name {}
+
         impl BlockSizeUser for $name {
             type BlockSize = $rate;
         }
@@ -99,6 +101,8 @@ macro_rules! shake_impl {
         pub struct $name {
             state: Sha3State,
         }
+
+        impl HashMarker for $name {}
 
         impl BlockSizeUser for $name {
             type BlockSize = $rate;

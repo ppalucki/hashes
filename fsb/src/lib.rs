@@ -61,6 +61,7 @@ use digest::{
         OutputSizeUser, Reset, UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
+    HashMarker,
 };
 
 // FSB-160

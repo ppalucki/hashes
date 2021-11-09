@@ -57,6 +57,7 @@ use digest::{
         Reset, UpdateCore,
     },
     generic_array::{typenum::Unsigned, GenericArray},
+    HashMarker,
 };
 
 mod c160;
@@ -72,6 +73,8 @@ pub struct Ripemd160Core {
     h: [u32; c160::DIGEST_BUF_LEN],
     block_len: u64,
 }
+
+impl HashMarker for Ripemd160Core {}
 
 impl BlockSizeUser for Ripemd160Core {
     type BlockSize = BlockSize;
@@ -153,6 +156,8 @@ pub struct Ripemd256Core {
     block_len: u64,
 }
 
+impl HashMarker for Ripemd256Core {}
+
 impl BlockSizeUser for Ripemd256Core {
     type BlockSize = BlockSize;
 }
@@ -232,6 +237,8 @@ pub struct Ripemd320Core {
     h: [u32; c320::DIGEST_BUF_LEN],
     block_len: u64,
 }
+
+impl HashMarker for Ripemd320Core {}
 
 impl BlockSizeUser for Ripemd320Core {
     type BlockSize = BlockSize;

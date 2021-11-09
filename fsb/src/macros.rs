@@ -12,6 +12,8 @@ macro_rules! fsb_impl {
             state: [u8; $r / 8],
         }
 
+        impl HashMarker for $state {}
+
         impl BlockSizeUser for $state {
             type BlockSize = $blocksize;
         }

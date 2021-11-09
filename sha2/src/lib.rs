@@ -73,6 +73,7 @@ use digest::{
         typenum::{Unsigned, U128, U28, U32, U48, U64},
         GenericArray,
     },
+    HashMarker,
 };
 
 mod consts;
@@ -97,6 +98,8 @@ macro_rules! implement {
             state: [$word; 8],
             block_len: $dword,
         }
+
+        impl HashMarker for $name {}
 
         impl BlockSizeUser for $name {
             type BlockSize = $block_size;

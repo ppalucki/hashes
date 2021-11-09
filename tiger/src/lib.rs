@@ -46,6 +46,7 @@ use digest::{
         typenum::{Unsigned, U24, U64},
         GenericArray,
     },
+    HashMarker,
 };
 
 mod compress;
@@ -68,6 +69,8 @@ pub struct TigerCore {
     block_len: u64,
     state: State,
 }
+
+impl HashMarker for TigerCore {}
 
 impl BlockSizeUser for TigerCore {
     type BlockSize = BlockSize;
@@ -142,6 +145,8 @@ pub struct Tiger2Core {
     block_len: u64,
     state: State,
 }
+
+impl HashMarker for Tiger2Core {}
 
 impl BlockSizeUser for Tiger2Core {
     type BlockSize = BlockSize;

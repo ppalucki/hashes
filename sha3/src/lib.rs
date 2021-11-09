@@ -75,6 +75,7 @@ use digest::{
         FixedOutputCore, OutputSizeUser, Reset, UpdateCore, XofReaderCore, XofReaderCoreWrapper,
     },
     generic_array::GenericArray,
+    HashMarker,
 };
 
 mod paddings;
