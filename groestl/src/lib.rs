@@ -46,7 +46,7 @@ use digest::{
         typenum::{Unsigned, U128, U28, U32, U48, U64},
         GenericArray,
     },
-    InvalidOutputSize, HashMarker,
+    HashMarker, InvalidOutputSize,
 };
 
 mod compress1024;
