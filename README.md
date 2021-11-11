@@ -2,18 +2,15 @@
 
 Collection of [cryptographic hash functions][1] written in pure Rust.
 
-All algorithms reside in the separate crates and implemented using traits from
-[`digest`](https://docs.rs/digest/) crate. Additionally all crates do not
-require the standard library (i.e. `no_std` capable) and can be easily used for
-bare-metal or WebAssembly programming.
+All algorithms reside in the separate crates and implemented using traits from [`digest`](https://docs.rs/digest/) crate.
+Additionally all crates do not require the standard library (i.e. `no_std` capable) and can be easily used for bare-metal or WebAssembly programming.
 
 ## Supported algorithms
-**Note:** For new applications, or where compatibility with other existing
-standards is not a primary concern, we strongly recommend to use either
-BLAKE2, SHA-2 or SHA-3.
+
+**Note:** For new applications, or where compatibility with other existing standards is not a primary concern, we strongly recommend to use either BLAKE2, SHA-2 or SHA-3.
 
 | Algorithm | Crate | Crates.io | Documentation | MSRV | [Security] |
-|-----------|-------|-----------|---------------|--------------|------------|
+|-----------|-------|-----------|---------------|------|------------|
 | [BLAKE2] | `blake2` | [![crates.io](https://img.shields.io/crates/v/blake2.svg)](https://crates.io/crates/blake2) | [![Documentation](https://docs.rs/blake2/badge.svg)](https://docs.rs/blake2) | ![Minimum Supported Rust Version][msrv-1.41] | :green_heart: |
 | [FSB] | `fsb` | [![crates.io](https://img.shields.io/crates/v/fsb.svg)](https://crates.io/crates/fsb) | [![Documentation](https://docs.rs/fsb/badge.svg)](https://docs.rs/fsb) | ![Minimum Supported Rust Version][msrv-1.41] | :green_heart: |
 | [GOST R 34.11-94][GOST94] | `gost94` | [![crates.io](https://img.shields.io/crates/v/gost94.svg)](https://crates.io/crates/gost94) | [![Documentation](https://docs.rs/gost94/badge.svg)](https://docs.rs/gost94) | ![Minimum Supported Rust Version][msrv-1.41] | :yellow_heart: |
@@ -32,24 +29,21 @@ BLAKE2, SHA-2 or SHA-3.
 | [Tiger] | `tiger` | [![crates.io](https://img.shields.io/crates/v/tiger.svg)](https://crates.io/crates/tiger) | [![Documentation](https://docs.rs/tiger/badge.svg)](https://docs.rs/tiger) | ![Minimum Supported Rust Version][msrv-1.41] | :green_heart: |
 | [Whirlpool] | `whirlpool` | [![crates.io](https://img.shields.io/crates/v/whirlpool.svg)](https://crates.io/crates/whirlpool) | [![Documentation](https://docs.rs/whirlpool/badge.svg)](https://docs.rs/whirlpool) | ![Minimum Supported Rust Version][msrv-1.41] | :green_heart: |
 
-NOTE: the [BLAKE3 crate](https://github.com/BLAKE3-team/BLAKE3) implements
-the `digest` traits used by the rest of the hashes in this repository,
-but is maintained by the BLAKE3 team.
+NOTE: the [BLAKE3 crate](https://github.com/BLAKE3-team/BLAKE3) implements the `digest` traits used by the rest of the hashes in this repository, but is maintained by the BLAKE3 team.
 
 [Security]: https://en.wikipedia.org/wiki/Hash_function_security_summary
 [:exclamation:]: #crate-names
 
 ### Crate names
-Whenever possible crates are published under the the same name as the crate
-folder. Owners of `md5` and `sha1` crates declined
-([1](https://github.com/stainless-steel/md5/pull/2),
-[2](https://github.com/mitsuhiko/rust-sha1/issues/17)) to participate in this
-project. This is why crates marked by :exclamation: are published under
-`md-5` and `sha-1` names respectively.
+
+Whenever possible crates are published under the the same name as the crate folder.
+Owners of `md5` and `sha1` crates declined ([1](https://github.com/stainless-steel/md5/pull/2), [2](https://github.com/mitsuhiko/rust-sha1/issues/17)) to participate in this project
+Those crates do not implement the [`digest`] traits, so they are not interoperable with the RustCrypto ecosystem.
+This is why crates marked by :exclamation: are published under `md-5` and `sha-1` names respectively.
 
 ### Security Level Legend
-The following describes the security level ratings associated with each
-hash function (i.e. algorithms, not the specific implementation):
+
+The following describes the security level ratings associated with each hash function (i.e. algorithms, not the specific implementation):
 
 | Heart          | Description |
 |----------------|-------------|
@@ -60,38 +54,37 @@ hash function (i.e. algorithms, not the specific implementation):
 See the [Security] page on Wikipedia for more information.
 
 ### Minimum Supported Rust Version (MSRV)
-All crates in this repository support Rust 1.41 or higher. In future
-minimally supported version of Rust can be changed, but it will be done with
-a minor version bump.
+
+All crates in this repository support Rust 1.41 or higher.
+In future minimally supported version of Rust can be changed, but it will be done with a minor version bump.
 
 ## Usage
-Let us demonstrate how to use crates in this repository using BLAKE2b as an
-example.
 
-First add `blake2` crate to your `Cargo.toml`:
+Let us demonstrate how to use crates in this repository using SHA-2 as an example.
+
+First add `sha2` crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-blake2 = "0.9"
+sha2 = "0.10"
 ```
 
-Note that crates in this repository have an enabled by default `std` feature.
+Note that all crates in this repository have an enabled by default `std` feature.
 So if you plan to use the crate in `no_std` environments, don't forget to disable it:
 
 ```toml
 [dependencies]
-blake2 = { version="0.9", default-features = false }
+sha2 = { version = "0.10", default-features = false }
 ```
 
-`blake2` and other crates re-export `digest` crate and `Digest` trait for
-convenience, so you don't have to add `digest` crate as an explicit dependency.
+`sha2` and other crates re-export the `digest` crate and the `Digest` trait for convenience, so you don't have to add `digest` crate as an explicit dependency.
 
 Now you can write the following code:
 
-```Rust
-use blake2::{Blake2b, Digest};
+```rust
+use sha2::{Sha256, Digest};
 
-let mut hasher = Blake2b::new();
+let mut hasher = Sha256::new();
 let data = b"Hello world!";
 hasher.update(data);
 // `update` can be called repeatedly and is generic over `AsRef<[u8]>`
@@ -101,64 +94,56 @@ let hash = hasher.finalize();
 println!("Result: {:x}", hash);
 ```
 
-In this example `hash` has type [`GenericArray<u8, U64>`][2], which is a generic
-alternative to `[u8; 64]`.
+In this example `hash` has type `GenericArray<u8, U32>`, which is a generic alternative to `[u8; 32]` defined in the [`generic-array`] crate.
 
-Alternatively you can use chained approach, which is equivalent to the previous
-example:
+Alternatively, you can use chained approach, which is equivalent to the previous example:
 
-```Rust
-use blake2::{Blake2b, Digest};
+```rust
+use sha2::{Sha256, Digest};
 
-let hash = Blake2b::new()
+let hash = Sha256::new()
     .chain(b"Hello world!")
     .chain("String data")
     .finalize();
 println!("Result: {:x}", hash);
 ```
 
-If the whole message is available you also can use convenience `digest` method:
+If a complete message is available, then you also can use the convenience `digest` method:
 
-```Rust
-use blake2::{Blake2b, Digest};
+```rust
+use sha2::{Sha256, Digest};
 
-let hash = Blake2b::digest(b"my message");
+let hash = Sha256::digest(b"my message");
 println!("Result: {:x}", hash);
 ```
 
 ### Hashing `Read`able objects
 
-If you want to hash data from [`Read`][3] trait (e.g. from file) you can rely on
-implementation of [`Write`][4] trait (requires an enabled-by-default `std` feature):
+If you want to hash data from a type which imlements the [`Read`] trait, you can rely on implementation of the [`Write`] trait (requires enabled-by-default `std` feature):
 
-```Rust
-use blake2::{Blake2b, Digest};
+```rust
+use sha2::{Sha256, Digest};
 use std::{fs, io};
 
 let mut file = fs::File::open(&path)?;
-let mut hasher = Blake2b::new();
+let mut hasher = Sha256::new();
 let n = io::copy(&mut file, &mut hasher)?;
 let hash = hasher.finalize();
-println!("Path: {}", path);
+
 println!("Bytes processed: {}", n);
 println!("Hash value: {:x}", hash);
 ```
 
 ### Hash-based Message Authentication Code (HMAC)
 
-If you want to calculate [Hash-based Message Authentication Code][5] (HMAC),
-you can use generic implementation from [`hmac`](https://docs.rs/hmac) crate,
-which is a part of the [RustCrypto/MACs][6] repository.
+If you want to calculate [Hash-based Message Authentication Code][HMAC] (HMAC), you can use the generic implementation from [`hmac`] crate, which is a part of the [RustCrypto/MACs] repository.
 
 ### Generic code
 
-You can write generic code over `Digest` (or other traits from `digest` crate)
-trait which will work over different hash functions:
+You can write generic code over the `Digest` trait (or other traits from the `digest` crate) which will work over different hash functions:
 
-```Rust
-use digest::Digest;
-use blake2::Blake2b;
-use sha2::Sha256;
+```rust
+use sha2::{Sha256, Sha512, Digest};
 
 // Toy example, do not use it in practice!
 // Instead use crates from: https://github.com/RustCrypto/password-hashing
@@ -170,15 +155,31 @@ fn hash_password<D: Digest>(password: &str, salt: &str, output: &mut [u8]) {
     output.copy_from_slice(&hasher.finalize())
 }
 
-let mut buf1 = [0u8; 64];
-hash_password::<Blake2b>("my_password", "abcd", &mut buf1);
+let mut buf1 = [0u8; 32];
+hash_password::<Sha256>("my_password", "abcd", &mut buf1);
 
-let mut buf2 = [0u8; 32];
-hash_password::<Sha256>("my_password", "abcd", &mut buf2);
+let mut buf2 = [0u8; 64];
+hash_password::<Sha512>("my_password", "abcd", &mut buf2);
 ```
 
-If you want to use hash functions with trait objects, use `digest::DynDigest`
-trait.
+If you want to use hash functions with trait objects, you can use the [`DynDigest`] trait:
+
+```rust
+use sha2::{Sha256, Sha512, digest::DynDigest};
+
+fn dyn_hash(hasher: &mut dyn DynDigest, data: &[u8]) -> Box<[u8]> {
+    hasher.update(data);
+    hasher.finalize_reset()
+}
+
+let mut sha256_hasher = Sha256::default();
+let mut sha512_hasher = Sha512::default();
+
+let res1 = dyn_hash(&mut sha256_hasher, b"foo");
+let res2 = dyn_hash(&mut sha256_hasher, b"bar");
+let res3 = dyn_hash(&mut sha512_hasher, b"foo");
+let res4 = dyn_hash(&mut sha512_hasher, b"bar");
+```
 
 ## License
 
@@ -191,9 +192,7 @@ at your option.
 
 ### Contribution
 
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
-dual licensed as above, without any additional terms or conditions.
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
 
 [//]: # (badges)
 
@@ -206,11 +205,13 @@ dual licensed as above, without any additional terms or conditions.
 [//]: # (footnotes)
 
 [1]: https://en.wikipedia.org/wiki/Cryptographic_hash_function
-[2]: https://docs.rs/generic-array
-[3]: https://doc.rust-lang.org/std/io/trait.Read.html
-[4]: https://doc.rust-lang.org/std/io/trait.Write.html
-[5]: https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
-[6]: https://github.com/RustCrypto/MACs
+[`generic-array`]: https://docs.rs/generic-array
+[HMAC]: https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
+[`Read`]: https://doc.rust-lang.org/std/io/trait.Read.html
+[`Write`]: https://doc.rust-lang.org/std/io/trait.Write.html
+[`hmac`]: https://docs.rs/hmac
+[RustCrypto/MACs]: https://github.com/RustCrypto/MACs
+[`DynDigest`]: https://docs.rs/digest/0.10.0/digest/trait.DynDigest.html
 
 [//]: # (algorithms)
 
